@@ -11,16 +11,31 @@ public class Row : MonoBehaviour
 
     public bool rowStopped;
     public string stoppedSlot;
+    public string previousStoppedSlot;
+
+    private float lambda = 2.7f;
+    List<float> computedProbas;
+
     // Start is called before the first frame update
     void Start()
     {
         rowStopped = true;
         GameControl.HandlePulled += StartRotating;
+
+        computedProbas = PoissonProbas(8, lambda);
+
         
+        //Debug.Log(computedProbas.Count);
+
+        for (int i = 0; i < computedProbas.Count; i++)
+        {
+            //Debug.Log(computedProbas[i]);
+        }
     }
 
     private void StartRotating()
     {
+        previousStoppedSlot = stoppedSlot;
         stoppedSlot = "";
         StartCoroutine("Rotate");
     }
@@ -45,24 +60,51 @@ public class Row : MonoBehaviour
             yield return new WaitForSeconds(timeInterval);
         }
 
-        randomValue = Random.Range(0, 32);
+        randomValue = PickFromPoisson();
 
-        Debug.Log(randomValue);
+        int correct = 0;
 
-        switch (randomValue % 4)
+        switch (previousStoppedSlot)
         {
-            case 1:
-                randomValue += 3;
+            case "Lemon":
+                correct = 7;
                 break;
-            case 2:
-                randomValue += 2;
+            case "Strawberry":
+                correct = 6;
                 break;
-            case 3:
-                randomValue += 1;
+            case "Grapes":
+                correct = 5;
+                break;
+            case "Watermelon":
+                correct = 4;
+                break;
+            case "Banana":
+                correct = 3;
+                break;
+            case "Cherry":
+                correct = 2;
+                break;
+            case "Pear":
+                correct = 1;
                 break;
         }
 
-        for (int i = 0; i < randomValue; i++)
+        //Debug.Log(randomValue);
+
+        //switch (randomValue % 4)
+        //{
+        //    case 1:
+        //        randomValue += 3;
+        //        break;
+        //    case 2:
+        //        randomValue += 2;
+        //        break;
+        //    case 3:
+        //        randomValue += 1;
+        //        break;
+        //}
+
+        for (int i = 0; i < correct*4 + randomValue*4; i++)
         {
             if (transform.position.y <= -9.4f)
             {
@@ -116,5 +158,70 @@ public class Row : MonoBehaviour
     void Update()
     {
         
+    }
+
+    int Factorial(int x)
+    {
+        if (x < 0)
+        {
+            return -1;
+        }
+        else if (x == 1 || x == 0)
+        {
+            return 1;
+        }
+        else
+        {
+            return x * Factorial(x - 1);
+        }
+    }
+
+
+    private float Poisson(int k, float lambda)
+    {
+        return (Mathf.Pow(lambda, k) / Factorial(k)) * Mathf.Exp(-lambda);
+    }
+
+    //Loi de poisson 
+    //Proba sont enregistrées en cumulées pour par la suite obtenir des intervales 
+    private List<float> PoissonProbas(int numberOfPossibilities, float lambda)
+    {
+        List<float> probas = new List<float>(numberOfPossibilities);
+
+        for(int i = 0; i < numberOfPossibilities; i++)
+        {
+            probas.Add(Poisson(i, lambda)+(i>0?probas[i-1]:0));
+        }
+
+        return probas;
+    }
+
+    private int PickFromPoisson()
+    {
+        float randomValue = Random.Range(0f,1f);
+
+        
+
+        float previous = 0f;
+        float next = 0.1f;
+        for (int i = 0; i < computedProbas.Count; i++)
+        {
+            if(i == computedProbas.Count-1)
+            {
+                next = 1;
+            }
+            else
+            {
+                next = computedProbas[i];
+            }
+            if (randomValue > previous && randomValue <= next)
+            {
+                Debug.Log(i);
+                return i;
+            }
+
+            previous = next;
+        }
+        return 0;
     }
 }

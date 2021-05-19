@@ -53,6 +53,15 @@ public class Logic : MonoBehaviour
         }
     }
 
+    public void move()
+    {
+        Debug.Log("clic");
+        for (int i = 0; i < instanciatedList.Count; i++)
+        {
+            instanciatedList[i].gameObject.transform.position = new Vector2(instanciatedList[i].gameObject.transform.position.x + 2, instanciatedList[i].gameObject.transform.position.y);
+        }
+    }
+
     private void OnDestroy()
     {
         RemoveAllEnemies();
