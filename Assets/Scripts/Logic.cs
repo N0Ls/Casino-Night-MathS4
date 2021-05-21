@@ -8,14 +8,25 @@ public class Logic : MonoBehaviour
     public GameObject redSquare;
     public GameObject blackSquare;
 
+    public GameObject[] Squares;
+
+    private Color[] colors = { Color.black, Color.red, Color.green };
+
     private GameObject[] instanciatedArray;
 
     List<GameObject> instanciatedList = new List<GameObject>();
 
+    private float timeInterval;
+
+    private float distanceGap = 2.5f;
+
     // Start is called before the first frame update
     void Start()
     {
+        
         GenerateSquares();
+        Vector3 stageDimensions = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
+        Debug.Log(stageDimensions);
     }
 
     // Update is called once per frame
@@ -28,10 +39,12 @@ public class Logic : MonoBehaviour
 
     void GenerateSquares()
     {
-  
-        for (int i = 0; i < 6; i++)
+        
+        for (int i = 0; i < 15; i++)
         {
-            instanciatedList.Add(Instantiate(greenSquare, new Vector3(-8.4f + i * 2.5f, 0.0f,0f), new Quaternion()));
+            int randomValue = Random.Range(0, Squares.Length);
+
+            instanciatedList.Add(Instantiate(Squares[randomValue], new Vector3(-17.5f + i * distanceGap, 0.0f,0f), new Quaternion()));
         }
     }
 
@@ -52,14 +65,42 @@ public class Logic : MonoBehaviour
 
         }
     }
+    private IEnumerator Rotate()
+    {
+
+        timeInterval = 0.025f;
+
+        for (int i = 0; i < instanciatedList.Count; i++)
+        {
+
+            if (instanciatedList[i].gameObject.transform.position.x >= 17.5f)
+            {
+                int randomValue = Random.Range(0, Squares.Length);
+
+                GameObject.Destroy(instanciatedList[i].gameObject);
+                instanciatedList.RemoveAt(instanciatedList.Count-1);
+
+                instanciatedList.Insert(0,Instantiate(Squares[randomValue], new Vector3(-17.5f - (3 * distanceGap) / 4, 0.0f, 0f), new Quaternion()));
+
+
+                Debug.Log(instanciatedList.Count);
+            }
+            else
+            {
+                Debug.Log(i + " Je décale");
+                instanciatedList[i].gameObject.transform.position = new Vector2(instanciatedList[i].gameObject.transform.position.x + distanceGap/4, instanciatedList[i].gameObject.transform.position.y);
+            }
+
+        }
+
+        yield return new WaitForSeconds(timeInterval);
+    }
+
 
     public void move()
     {
-        Debug.Log("clic");
-        for (int i = 0; i < instanciatedList.Count; i++)
-        {
-            instanciatedList[i].gameObject.transform.position = new Vector2(instanciatedList[i].gameObject.transform.position.x + 2, instanciatedList[i].gameObject.transform.position.y);
-        }
+        StartCoroutine("Rotate");
+
     }
 
     private void OnDestroy()

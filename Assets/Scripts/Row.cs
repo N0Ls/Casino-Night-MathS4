@@ -176,7 +176,7 @@ public class Row : MonoBehaviour
         }
     }
 
-
+    //Calcul de la probabilité
     private float Poisson(int k, float lambda)
     {
         return (Mathf.Pow(lambda, k) / Factorial(k)) * Mathf.Exp(-lambda);
@@ -200,10 +200,9 @@ public class Row : MonoBehaviour
     {
         float randomValue = Random.Range(0f,1f);
 
-        
-
         float previous = 0f;
         float next = 0.1f;
+
         for (int i = 0; i < computedProbas.Count; i++)
         {
             if(i == computedProbas.Count-1)

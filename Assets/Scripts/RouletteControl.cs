@@ -15,4 +15,9 @@ public class RouletteControl : MonoBehaviour
     {
         
     }
+
+    private void OnMouseDown()
+    {
+        
+    }
 }
