@@ -9,6 +9,6 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: 60754f8c77dc93b4bae316bfc9d975d8
   - enabled: 1
-    path: Assets/Scenes/RouletteGame.unity
+    path: Assets/Scenes/SlotMachine.unity
     guid: 4bf3e9474f66bd04d96ac87781e39804
   m_configObjects: {}
