@@ -42,7 +42,7 @@ public class GameControl : MonoBehaviour
         {
             CheckResults();
             prizeText.enabled = true;
-            prizeText.text = "Prize : " + prizeValue * prizeBonus;
+            prizeText.text = "Prize : " + Mathf.RoundToInt(prizeValue * prizeBonus);
 
         }
     }
@@ -117,45 +117,91 @@ public class GameControl : MonoBehaviour
         //    && rows[2].stoppedSlot == "Banana")
         //    prizeValue = 100;
 
+
         //In the case we have the three fruits
         if(rows[0].stoppedSlot == rows[1].stoppedSlot && rows[1].stoppedSlot == rows[2].stoppedSlot)
         {
             switch (rows[0].stoppedSlot)
             {
                 case "Watermelon":
-                    prizeValue = 100;
+                    prizeValue = 200;
                     break;
                 case "Grapes":
-                    prizeValue = 100;
+                    prizeValue = 120;
                     break;
                 case "Strawberry":
                     prizeValue = 100;
                     break;
                 case "Lemon":
-                    prizeValue = 100;
+                    prizeValue = 150;
                     break;
                 case "Orange":
-                    prizeValue = 100;
+                    prizeValue = 250;
                     break;
                 case "Pear":
-                    prizeValue = 100;
+                    prizeValue = 1000;
                     break;
                 case "Cherry":
-                    prizeValue = 100;
+                    prizeValue = 500;
                     break;
                 case "Banana":
-                    prizeValue = 100;
+                    prizeValue = 300;
                     break;
                 default:
                     prizeValue = 0;
                     break;
             }
 
-        }
-
-        if (rows[0].stoppedSlot == rows[1].stoppedSlot || rows[0].stoppedSlot == rows[2].stoppedSlot || rows[1].stoppedSlot == rows[2].stoppedSlot)
+        } 
+        // In case we have two fruits
+        else if (rows[0].stoppedSlot == rows[1].stoppedSlot || rows[0].stoppedSlot == rows[2].stoppedSlot || rows[1].stoppedSlot == rows[2].stoppedSlot)
         {
-            prizeValue = 50;
+            int equalRows = 1;
+            if(rows[0].stoppedSlot == rows[1].stoppedSlot)
+            {
+                equalRows = 12;
+            }
+            if (rows[0].stoppedSlot == rows[2].stoppedSlot)
+            {
+                equalRows = 13;
+            }
+            if (rows[1].stoppedSlot == rows[2].stoppedSlot)
+            {
+                equalRows = 23;
+            }
+
+            int winningRow = equalRows % 10;
+
+            switch (rows[winningRow-1].stoppedSlot)
+            {
+                case "Watermelon":
+                    prizeValue = 20;
+                    break;
+                case "Grapes":
+                    prizeValue = 12;
+                    break;
+                case "Strawberry":
+                    prizeValue = 10;
+                    break;
+                case "Lemon":
+                    prizeValue = 15;
+                    break;
+                case "Orange":
+                    prizeValue = 25;
+                    break;
+                case "Pear":
+                    prizeValue = 100;
+                    break;
+                case "Cherry":
+                    prizeValue = 50;
+                    break;
+                case "Banana":
+                    prizeValue = 30;
+                    break;
+                default:
+                    prizeValue = 0;
+                    break;
+            }
         }
 
         //Bonus application
