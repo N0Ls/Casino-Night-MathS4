@@ -31,6 +31,8 @@ public class Row : MonoBehaviour
         {
             //Debug.Log(computedProbas[i]);
         }
+
+        verifyPoisson();
     }
 
     private void StartRotating()
@@ -215,12 +217,31 @@ public class Row : MonoBehaviour
             }
             if (randomValue > previous && randomValue <= next)
             {
-                Debug.Log(i);
+                //Debug.Log(i);
                 return i;
             }
 
             previous = next;
         }
         return 0;
+    }
+
+    private void verifyPoisson()
+    {
+
+        int iter = 10000;
+
+        List<float> arrayCompteur = new List<float> { 0f, 0f, 0f, 0f, 0f ,0f , 0f, 0f};
+
+        for (int i = 0; i < iter; i++)
+        {
+            int index = PickFromPoisson();
+            arrayCompteur[index] = arrayCompteur[index]+=1;
+        }
+
+        for (int y = 0; y < arrayCompteur.Count; y++)
+        {
+            Debug.Log(arrayCompteur[y] / iter);
+        }
     }
 }
