@@ -65,11 +65,9 @@ public class Logic : MonoBehaviour
 
         }
     }
-    private IEnumerator Rotate()
+
+    private void RotateAllIncrement()
     {
-
-        timeInterval = 0.025f;
-
         for (int i = 0; i < instanciatedList.Count; i++)
         {
 
@@ -78,22 +76,34 @@ public class Logic : MonoBehaviour
                 int randomValue = Random.Range(0, Squares.Length);
 
                 GameObject.Destroy(instanciatedList[i].gameObject);
-                instanciatedList.RemoveAt(instanciatedList.Count-1);
+                instanciatedList.RemoveAt(instanciatedList.Count - 1);
 
-                instanciatedList.Insert(0,Instantiate(Squares[randomValue], new Vector3(-17.5f - (3 * distanceGap) / 4, 0.0f, 0f), new Quaternion()));
+                instanciatedList.Insert(0, Instantiate(Squares[randomValue], new Vector3(-17.5f - (3 * distanceGap) / 4, 0.0f, 0f), new Quaternion()));
 
 
                 Debug.Log(instanciatedList.Count);
             }
             else
             {
-                Debug.Log(i + " Je décale");
-                instanciatedList[i].gameObject.transform.position = new Vector2(instanciatedList[i].gameObject.transform.position.x + distanceGap/4, instanciatedList[i].gameObject.transform.position.y);
+                instanciatedList[i].gameObject.transform.position = new Vector2(instanciatedList[i].gameObject.transform.position.x + distanceGap / 4, instanciatedList[i].gameObject.transform.position.y);
             }
 
         }
+    }
+    private IEnumerator Rotate()
+    {
 
-        yield return new WaitForSeconds(timeInterval);
+        timeInterval = 0.025f;
+
+        for(int y=0; y < 15*4; y++)
+        {
+            RotateAllIncrement();
+            yield return new WaitForSeconds(timeInterval);
+        }
+
+        
+  
+
     }
 
 
