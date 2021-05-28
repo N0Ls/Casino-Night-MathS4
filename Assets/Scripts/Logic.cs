@@ -24,12 +24,14 @@ public class Logic : MonoBehaviour
     private bool stopped = true;
     private bool resultsChecked = true;
 
-    private Color bettedColor = Color.black;
+    private Color betColor = Color.black;
     private Color resultColor = Color.yellow;
 
     public GameObject blackButton;
     public GameObject redButton;
     public GameObject greenButton;
+
+    public float geoParam = 0.55f;
 
     
 
@@ -39,6 +41,7 @@ public class Logic : MonoBehaviour
         GenerateSquares();
         Vector3 stageDimensions = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
         //Debug.Log(stageDimensions);
+        Probabilities.verifyGeometric();
     }
 
     // Update is called once per frame
@@ -94,15 +97,12 @@ public class Logic : MonoBehaviour
 
             if (instanciatedList[i].gameObject.transform.position.x >= 17.5f)
             {
-                int randomValue = Random.Range(0, Squares.Length);
-
                 GameObject.Destroy(instanciatedList[i].gameObject);
                 instanciatedList.RemoveAt(instanciatedList.Count - 1);
 
-                instanciatedList.Insert(0, Instantiate(Squares[randomValue], new Vector3(-17.5f - (3 * distanceGap) / 4, 0.0f, 0f), new Quaternion()));
-
-
-                //Debug.Log(instanciatedList.Count);
+                int randomValue = Probabilities.GeometricPick(geoParam);
+                if (randomValue > 3) randomValue = 3;
+                instanciatedList.Insert(0, Instantiate(Squares[randomValue-1], new Vector3(-17.5f - (3 * distanceGap) / 4, 0.0f, 0f), new Quaternion()));
             }
             else
             {
@@ -147,7 +147,7 @@ public class Logic : MonoBehaviour
 
     public void move(int bet)
     {
-        bettedColor = colors[bet];
+        betColor = colors[bet];
 
         StartCoroutine("Rotate");
 
@@ -156,7 +156,7 @@ public class Logic : MonoBehaviour
     private void CheckResults()
     {
 
-        if(bettedColor == resultColor)
+        if(betColor == resultColor)
         {
             Debug.Log("Win");
         }

@@ -5,7 +5,7 @@ using UnityEngine;
 public static class UserStats
 {
 
-    private static int money=120, rounds=0, slotsWinDuo=0, slotsWinTrio=0;
+    private static int money=120, rounds=0, slotsWinDuo=0, slotsWinTrio=0, bonusCount=0;
 
     public static List<float> slotResults = new List<float> { 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f };
 
@@ -54,6 +54,18 @@ public static class UserStats
         set
         {
             slotsWinTrio = value;
+        }
+    }
+
+    public static int BonusCount
+    {
+        get
+        {
+            return bonusCount;
+        }
+        set
+        {
+            bonusCount = value;
         }
     }
 

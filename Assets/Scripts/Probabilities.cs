@@ -27,7 +27,7 @@ public class Probabilities
     }
 
     //Loi de poisson 
-    //Proba sont enregistrées en cumulées pour par la suite obtenir des intervales 
+    //Fonction de répartition
     static List<float> PoissonProbas(int numberOfPossibilities, float lambda)
     {
         List<float> probas = new List<float>(numberOfPossibilities);
@@ -61,7 +61,7 @@ public class Probabilities
             }
             if (randomValue > previous && randomValue <= next)
             {
-                Debug.Log(i);
+                //Debug.Log(i);
                 return i;
             }
 
@@ -85,5 +85,84 @@ public class Probabilities
         return arrayCompteur;
     }
 
+    public static float Geometric(int k, float p)
+    {
+        return (Mathf.Pow(1-p, k-1) * p);
+    }
+
+    static List<float> GeometricProbas(int numberOfPossibilities, float p)
+    {
+        List<float> probas = new List<float>(numberOfPossibilities);
+
+        for (int i = 0; i < numberOfPossibilities; i++)
+        {
+            probas.Add(Geometric(i+1, p) + (i > 0 ? probas[i - 1] : 0));
+        }
+
+        return probas;
+    }
+
+    public static int PickFromGeometric(int nbPossibilities, float p)
+    {
+        float randomValue = Random.Range(0f, 1f);
+
+        float previous = 0f;
+        float next = 0.1f;
+
+        List<float> computedProbas = Probabilities.GeometricProbas(nbPossibilities, p); ;
+
+        for (int i = 0; i < computedProbas.Count; i++)
+        {
+            if (i == computedProbas.Count - 1)
+            {
+                next = 1;
+            }
+            else
+            {
+                next = computedProbas[i];
+            }
+            if (randomValue > previous && randomValue <= next)
+            {
+                return i;
+            }
+
+            previous = next;
+        }
+        return 0;
+    }
+
+    public static int GeometricPick(float p)
+    {
+        float randomValue = Random.Range(0f, 1f);
+        int n = 1;
+        while (randomValue >= p)
+        {
+            randomValue *= Random.Range(0f, 1f);
+            n++;
+        }
+        return n;
+    }
+
+
+    public static List<float> verifyGeometric()
+    {
+        int iter = 10000;
+
+        List<float> arrayCompteur = new List<float> { 0f, 0f, 0f };
+
+        for (int i = 0; i < iter; i++)
+        {
+            int index = GeometricPick(0.55f);
+            if (index > 3) index = 3;
+            arrayCompteur[index-1] = arrayCompteur[index-1] += 1;
+        }
+
+        for (int i = 0; i < arrayCompteur.Count; i++)
+        {
+            //Debug.Log(i + " " + arrayCompteur[i]/10000);
+        }
+
+        return arrayCompteur;
+    }
 
 }

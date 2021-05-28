@@ -61,7 +61,10 @@ public class GameControl : MonoBehaviour
 
             //Update prize text
             prizeText.enabled = true;
+            if(prizeBonus > 1.0f) prizeText.color = Color.red;
+            else prizeText.color = Color.white;
             prizeText.text = "Prize : " + Mathf.RoundToInt(prizeValue * prizeBonus);
+
 
             //Add money to user
             UserStats.Money += Mathf.RoundToInt(prizeValue * prizeBonus);
@@ -198,6 +201,7 @@ public class GameControl : MonoBehaviour
 
         if(randomValue < sliderUI.value)
         {
+            UserStats.BonusCount++;
             float bonusValue = Probabilities.Poisson(0, sliderUI.value);
             prizeBonus = 1+bonusValue;
         }
