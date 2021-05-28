@@ -4,7 +4,6 @@ using UnityEngine;
 
 public static class UserStats
 {
-    private static int kills, deaths, assists, points;
 
     private static int money=120, rounds=0, slotsWinDuo=0, slotsWinTrio=0;
 
@@ -58,51 +57,4 @@ public static class UserStats
         }
     }
 
-    public static int Kills
-    {
-        get
-        {
-            return kills;
-        }
-        set
-        {
-            kills = value;
-        }
-    }
-
-    public static int Deaths
-    {
-        get
-        {
-            return deaths;
-        }
-        set
-        {
-            deaths = value;
-        }
-    }
-
-    public static int Assists
-    {
-        get
-        {
-            return assists;
-        }
-        set
-        {
-            assists = value;
-        }
-    }
-
-    public static int Points
-    {
-        get
-        {
-            return points;
-        }
-        set
-        {
-            points = value;
-        }
-    }
 }

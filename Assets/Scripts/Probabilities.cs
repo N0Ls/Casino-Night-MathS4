@@ -70,9 +70,8 @@ public class Probabilities
         return 0;
     }
 
-    static void verifyPoisson()
+    static List<float> verifyPoisson()
     {
-
         int iter = 10000;
 
         List<float> arrayCompteur = new List<float> { 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f };
@@ -83,10 +82,7 @@ public class Probabilities
             arrayCompteur[index] = arrayCompteur[index] += 1;
         }
 
-        for (int y = 0; y < arrayCompteur.Count; y++)
-        {
-            //Debug.Log(arrayCompteur[y] / iter);
-        }
+        return arrayCompteur;
     }
 
 
