@@ -198,7 +198,8 @@ public class GameControl : MonoBehaviour
 
         if(randomValue < sliderUI.value)
         {
-            prizeBonus = 1.3f;
+            float bonusValue = Probabilities.Poisson(0, sliderUI.value);
+            prizeBonus = 1+bonusValue;
         }
 
         resultsChecked = true;
