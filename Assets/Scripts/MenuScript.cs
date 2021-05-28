@@ -10,6 +10,11 @@ public class MenuScript : MonoBehaviour
        SceneManager.LoadScene("SlotMachine");
     }
 
+    public void goToStats()
+    {
+        SceneManager.LoadScene("Stats");
+    }
+
 
     public void quitGame()
     {
