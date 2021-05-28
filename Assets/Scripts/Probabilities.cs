@@ -21,7 +21,7 @@ public class Probabilities
     }
 
     //Calcul de la probabilité
-    static float Poisson(int k, float lambda)
+    public static float Poisson(int k, float lambda)
     {
         return (Mathf.Pow(lambda, k) / Factorial(k)) * Mathf.Exp(-lambda);
     }

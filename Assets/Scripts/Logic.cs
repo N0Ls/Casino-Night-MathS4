@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Logic : MonoBehaviour
 {
@@ -20,19 +21,39 @@ public class Logic : MonoBehaviour
 
     private float distanceGap = 2.5f;
 
+    private bool stopped = true;
+    private bool resultsChecked = true;
+
+    private Color bettedColor = Color.black;
+    private Color resultColor = Color.yellow;
+
+    public GameObject blackButton;
+    public GameObject redButton;
+    public GameObject greenButton;
+
+    
+
     // Start is called before the first frame update
     void Start()
     {
-        
         GenerateSquares();
         Vector3 stageDimensions = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
-        Debug.Log(stageDimensions);
+        //Debug.Log(stageDimensions);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (!stopped)
+        {
+            resultsChecked = false;
+
+        }
+        if (stopped && !resultsChecked)
+        {
+            //Checking results
+            CheckResults();
+        }
     }
 
 
@@ -81,7 +102,7 @@ public class Logic : MonoBehaviour
                 instanciatedList.Insert(0, Instantiate(Squares[randomValue], new Vector3(-17.5f - (3 * distanceGap) / 4, 0.0f, 0f), new Quaternion()));
 
 
-                Debug.Log(instanciatedList.Count);
+                //Debug.Log(instanciatedList.Count);
             }
             else
             {
@@ -92,25 +113,55 @@ public class Logic : MonoBehaviour
     }
     private IEnumerator Rotate()
     {
+        stopped = false;
 
         timeInterval = 0.025f;
 
-        for(int y=0; y < 15*4; y++)
+        //Disabling buttons
+        greenButton.GetComponent<Button>().interactable = false;
+        blackButton.GetComponent<Button>().interactable = false;
+        redButton.GetComponent<Button>().interactable = false;
+
+        for (int y=0; y < 15*4; y++)
         {
             RotateAllIncrement();
             yield return new WaitForSeconds(timeInterval);
         }
 
-        
-  
+        for (int i = 0; i < instanciatedList.Count; i++)
+        {
+            if(instanciatedList[i].transform.position.x >= -0.01 && instanciatedList[i].transform.position.x <= 0.01)
+            {
+                resultColor = instanciatedList[i].gameObject.GetComponent<SpriteRenderer>().color;
+            }
+        }
 
+        stopped = true;
+
+        //Enabling back buttons
+        greenButton.GetComponent<Button>().interactable = true;
+        blackButton.GetComponent<Button>().interactable = true;
+        redButton.GetComponent<Button>().interactable = true;
     }
 
 
-    public void move()
+    public void move(int bet)
     {
+        bettedColor = colors[bet];
+
         StartCoroutine("Rotate");
 
+    }
+
+    private void CheckResults()
+    {
+
+        if(bettedColor == resultColor)
+        {
+            Debug.Log("Win");
+        }
+
+        resultsChecked = true;
     }
 
     private void OnDestroy()
