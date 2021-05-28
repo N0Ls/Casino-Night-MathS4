@@ -15,6 +15,10 @@ public class MenuScript : MonoBehaviour
         SceneManager.LoadScene("Stats");
     }
 
+    public void goBackToMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
 
     public void quitGame()
     {
