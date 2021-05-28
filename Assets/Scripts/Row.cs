@@ -14,7 +14,8 @@ public class Row : MonoBehaviour
     public string previousStoppedSlot;
 
     private float lambda = 2.7f;
-    List<float> computedProbas;
+    private int nbPosibilities = 8;
+
 
     // Start is called before the first frame update
     void Start()
@@ -22,17 +23,6 @@ public class Row : MonoBehaviour
         rowStopped = true;
         GameControl.HandlePulled += StartRotating;
 
-        computedProbas = PoissonProbas(8, lambda);
-
-        
-        //Debug.Log(computedProbas.Count);
-
-        for (int i = 0; i < computedProbas.Count; i++)
-        {
-            //Debug.Log(computedProbas[i]);
-        }
-
-        verifyPoisson();
     }
 
     private void StartRotating()
@@ -62,7 +52,8 @@ public class Row : MonoBehaviour
             yield return new WaitForSeconds(timeInterval);
         }
 
-        randomValue = PickFromPoisson();
+        randomValue = Probabilities.PickFromPoisson(nbPosibilities, lambda);
+        UserStats.slotResults[randomValue] += 1;
 
         int correct = 0;
 
@@ -162,86 +153,5 @@ public class Row : MonoBehaviour
         
     }
 
-    int Factorial(int x)
-    {
-        if (x < 0)
-        {
-            return -1;
-        }
-        else if (x == 1 || x == 0)
-        {
-            return 1;
-        }
-        else
-        {
-            return x * Factorial(x - 1);
-        }
-    }
-
-    //Calcul de la probabilité
-    private float Poisson(int k, float lambda)
-    {
-        return (Mathf.Pow(lambda, k) / Factorial(k)) * Mathf.Exp(-lambda);
-    }
-
-    //Loi de poisson 
-    //Proba sont enregistrées en cumulées pour par la suite obtenir des intervales 
-    private List<float> PoissonProbas(int numberOfPossibilities, float lambda)
-    {
-        List<float> probas = new List<float>(numberOfPossibilities);
-
-        for(int i = 0; i < numberOfPossibilities; i++)
-        {
-            probas.Add(Poisson(i, lambda)+(i>0?probas[i-1]:0));
-        }
-
-        return probas;
-    }
-
-    private int PickFromPoisson()
-    {
-        float randomValue = Random.Range(0f,1f);
-
-        float previous = 0f;
-        float next = 0.1f;
-
-        for (int i = 0; i < computedProbas.Count; i++)
-        {
-            if(i == computedProbas.Count-1)
-            {
-                next = 1;
-            }
-            else
-            {
-                next = computedProbas[i];
-            }
-            if (randomValue > previous && randomValue <= next)
-            {
-                //Debug.Log(i);
-                return i;
-            }
-
-            previous = next;
-        }
-        return 0;
-    }
-
-    private void verifyPoisson()
-    {
-
-        int iter = 10000;
-
-        List<float> arrayCompteur = new List<float> { 0f, 0f, 0f, 0f, 0f ,0f , 0f, 0f};
-
-        for (int i = 0; i < iter; i++)
-        {
-            int index = PickFromPoisson();
-            arrayCompteur[index] = arrayCompteur[index]+=1;
-        }
-
-        for (int y = 0; y < arrayCompteur.Count; y++)
-        {
-            Debug.Log(arrayCompteur[y] / iter);
-        }
-    }
+    
 }
