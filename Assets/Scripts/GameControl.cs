@@ -14,6 +14,12 @@ public class GameControl : MonoBehaviour
     private TMP_Text prizeText;
 
     [SerializeField]
+    private TMP_Text userMoneyText;
+
+    [SerializeField]
+    private TMP_Text userRoundText;
+
+    [SerializeField]
     private Row[] rows;
 
     [SerializeField]
@@ -22,6 +28,7 @@ public class GameControl : MonoBehaviour
     private int prizeValue;
 
     private bool resultsChecked = false;
+    private bool textUpdated = false;
 
     private float prizeBonus = 1.0f;
 
@@ -38,11 +45,29 @@ public class GameControl : MonoBehaviour
             resultsChecked = false;
 
         }
+        if (textUpdated)
+        {
+            textUpdated = false;
+
+            //Increments rounds number
+            userRoundText.text = UserStats.slotResults[2].ToString();
+
+            userMoneyText.text = UserStats.Money.ToString();
+        }
         if (rows[0].rowStopped && rows[1].rowStopped && rows[2].rowStopped && !resultsChecked)
         {
+            //Checking results
             CheckResults();
+
+            //Update prize text
             prizeText.enabled = true;
             prizeText.text = "Prize : " + Mathf.RoundToInt(prizeValue * prizeBonus);
+
+            //Add money to user
+            UserStats.Money += Mathf.RoundToInt(prizeValue * prizeBonus);
+            userMoneyText.text = UserStats.Money.ToString();
+
+
 
         }
     }
@@ -51,6 +76,9 @@ public class GameControl : MonoBehaviour
     {
         if(rows[0].rowStopped && rows[1].rowStopped && rows[2].rowStopped)
         {
+            UserStats.Rounds += 1;
+            UserStats.Money -= 10;
+            textUpdated = true;
             StartCoroutine("PullHandle");
         }
     }
@@ -76,46 +104,6 @@ public class GameControl : MonoBehaviour
     {
 
         Debug.Log("Results Checked");
-
-        //if (rows[0].stoppedSlot == "Watermelon"
-        //    && rows[1].stoppedSlot == "Watermelon"
-        //    && rows[2].stoppedSlot == "Watermelon")
-        //    prizeValue = 100;
-
-        //else if(rows[0].stoppedSlot == "Grapes"
-        //    && rows[1].stoppedSlot == "Grapes"
-        //    && rows[2].stoppedSlot == "Grapes")
-        //    prizeValue = 100;
-
-        //else if (rows[0].stoppedSlot == "Strawberry"
-        //    && rows[1].stoppedSlot == "Strawberry"
-        //    && rows[2].stoppedSlot == "Strawberry")
-        //    prizeValue = 100;
-
-        //else if (rows[0].stoppedSlot == "Lemon"
-        //    && rows[1].stoppedSlot == "Lemon"
-        //    && rows[2].stoppedSlot == "Lemon")
-        //    prizeValue = 100;
-
-        //else if (rows[0].stoppedSlot == "Orange"
-        //    && rows[1].stoppedSlot == "Orange"
-        //    && rows[2].stoppedSlot == "Orange")
-        //    prizeValue = 100;
-
-        //else if (rows[0].stoppedSlot == "Pear"
-        //    && rows[1].stoppedSlot == "Pear"
-        //    && rows[2].stoppedSlot == "Pear")
-        //    prizeValue = 100;
-
-        //else if (rows[0].stoppedSlot == "Cherry"
-        //    && rows[1].stoppedSlot == "Cherry"
-        //    && rows[2].stoppedSlot == "Cherry")
-        //    prizeValue = 100;
-
-        //else if (rows[0].stoppedSlot == "Banana"
-        //    && rows[1].stoppedSlot == "Banana"
-        //    && rows[2].stoppedSlot == "Banana")
-        //    prizeValue = 100;
 
 
         //In the case we have the three fruits
@@ -151,7 +139,7 @@ public class GameControl : MonoBehaviour
                     prizeValue = 0;
                     break;
             }
-
+            UserStats.SlotsWinTrio += 1;
         } 
         // In case we have two fruits
         else if (rows[0].stoppedSlot == rows[1].stoppedSlot || rows[0].stoppedSlot == rows[2].stoppedSlot || rows[1].stoppedSlot == rows[2].stoppedSlot)
@@ -202,6 +190,7 @@ public class GameControl : MonoBehaviour
                     prizeValue = 0;
                     break;
             }
+            UserStats.SlotsWinDuo += 1;
         }
 
         //Bonus application
