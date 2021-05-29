@@ -100,17 +100,19 @@ public class Logic : MonoBehaviour
                 GameObject.Destroy(instanciatedList[i].gameObject);
                 instanciatedList.RemoveAt(instanciatedList.Count - 1);
 
-                int randomValue = Probabilities.GeometricPick(geoParam);
-                if (randomValue > 3) randomValue = 3;
-                instanciatedList.Insert(0, Instantiate(Squares[randomValue-1], new Vector3(-17.5f - (3 * distanceGap) / 4, 0.0f, 0f), new Quaternion()));
+                int randomValue = Probabilities.pickFromBinomial(2, 0.3f);
+                if (randomValue > 2) randomValue = 2;
+                instanciatedList.Insert(0, Instantiate(Squares[randomValue], new Vector3(-17.5f - (3 * distanceGap) / 4, 0.0f, 0f), new Quaternion()));
             }
             else
             {
                 instanciatedList[i].gameObject.transform.position = new Vector2(instanciatedList[i].gameObject.transform.position.x + distanceGap / 4, instanciatedList[i].gameObject.transform.position.y);
             }
-
         }
+
+        int randomNbTours = Probabilities.GeometricPick(geoParam);
     }
+
     private IEnumerator Rotate()
     {
         stopped = false;
@@ -125,6 +127,15 @@ public class Logic : MonoBehaviour
         for (int y=0; y < 15*4; y++)
         {
             RotateAllIncrement();
+            yield return new WaitForSeconds(timeInterval);
+        }
+
+        int randomValue = Probabilities.GeometricPick(geoParam);
+
+        for (int y = 0; y < 15 * 4 * randomValue; y++)
+        {
+            RotateAllIncrement();
+
             yield return new WaitForSeconds(timeInterval);
         }
 

@@ -143,7 +143,6 @@ public class Probabilities
         return n;
     }
 
-
     public static List<float> verifyGeometric()
     {
         int iter = 10000;
@@ -164,5 +163,49 @@ public class Probabilities
 
         return arrayCompteur;
     }
+
+    static int CoeffBinomial(int n, int k)
+    {
+        if (k > n / 2) k = n - k;
+
+        int result = 1;
+        for (int i = 1; i <= k; i++)
+        {
+            result *= (n - k + i);
+            result /= i;
+        }
+        return result;
+    }
+
+    static float Bernoulli(int k, float p, int n)
+    {
+	    return Mathf.Pow(p, k) * Mathf.Pow(1 - p, n - k);
+    }
+
+    public static int pickFromBernoulli(float p)
+    {
+        float randomValue = Random.Range(0f, 1f);
+
+        if (randomValue <= p) return 1;
+        else return 0;
+    }
+
+
+    public static float Binomial(int n, int k, float p)
+    {
+        return CoeffBinomial(n,k) * Mathf.Pow(p,k) * Mathf.Pow(1-p, n-k);
+    }
+
+    public static int pickFromBinomial(int n, float p)
+    {
+        int wins = 0;
+        for (int i = 0; i < n; i++)
+        {
+            if (pickFromBernoulli(p)==1)
+                wins++;
+        }
+        return wins;
+    }
+
 
 }
