@@ -31,7 +31,7 @@ public class Logic : MonoBehaviour
     public GameObject redButton;
     public GameObject greenButton;
 
-    public float geoParam = 0.55f;
+    public float geoParam = 0.7f;
 
     
 
@@ -103,14 +103,14 @@ public class Logic : MonoBehaviour
                 int randomValue = Probabilities.pickFromBinomial(2, 0.3f);
                 if (randomValue > 2) randomValue = 2;
                 instanciatedList.Insert(0, Instantiate(Squares[randomValue], new Vector3(-17.5f - (3 * distanceGap) / 4, 0.0f, 0f), new Quaternion()));
+
+                UserStats.rouletteColorSquares[randomValue]++;
             }
             else
             {
                 instanciatedList[i].gameObject.transform.position = new Vector2(instanciatedList[i].gameObject.transform.position.x + distanceGap / 4, instanciatedList[i].gameObject.transform.position.y);
             }
         }
-
-        int randomNbTours = Probabilities.GeometricPick(geoParam);
     }
 
     private IEnumerator Rotate()
@@ -130,7 +130,9 @@ public class Logic : MonoBehaviour
             yield return new WaitForSeconds(timeInterval);
         }
 
-        int randomValue = Probabilities.GeometricPick(geoParam);
+        int randomValue = Probabilities.GeometricPick(geoParam) + 1;
+
+        UserStats.RouletteSpins += randomValue;
 
         for (int y = 0; y < 15 * 4 * randomValue; y++)
         {
@@ -170,6 +172,7 @@ public class Logic : MonoBehaviour
         if(betColor == resultColor)
         {
             Debug.Log("Win");
+            UserStats.RouletteWins++;
         }
 
         resultsChecked = true;
