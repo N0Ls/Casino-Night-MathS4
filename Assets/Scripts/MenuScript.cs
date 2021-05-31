@@ -10,6 +10,11 @@ public class MenuScript : MonoBehaviour
        SceneManager.LoadScene("SlotMachine");
     }
 
+    public void playRoulette()
+    {
+        SceneManager.LoadScene("Roulette");
+    }
+
     public void goToStats()
     {
         SceneManager.LoadScene("Stats");
