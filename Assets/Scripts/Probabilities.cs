@@ -20,14 +20,14 @@ public class Probabilities
         }
     }
 
-    //Calcul de la probabilité
+    //Calcul de la probabilitï¿½
     public static float Poisson(int k, float lambda)
     {
         return (Mathf.Pow(lambda, k) / Factorial(k)) * Mathf.Exp(-lambda);
     }
 
     //Loi de poisson 
-    //Fonction de répartition
+    //Fonction de rï¿½partition
     static List<float> PoissonProbas(int numberOfPossibilities, float lambda)
     {
         List<float> probas = new List<float>(numberOfPossibilities);
@@ -215,5 +215,19 @@ public class Probabilities
     public static void TestLoiNormale()
     {
         Debug.Log(LoiNormale(0, 3, 0));
+    }
+
+    public static int LoiUniformDiscrete(int a, int b)
+    {
+        return Mathf.RoundToInt(a + Random.Range(0f, 1f) * b);
+    }
+
+    public static void TestLoiUniformDiscrete()
+    {
+        for (int i = 0; i < 100; i++)
+        {
+            Debug.Log(LoiUniformDiscrete(0, 4));
+        }
+  
     }
 }
