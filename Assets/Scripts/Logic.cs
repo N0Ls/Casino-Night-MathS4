@@ -42,6 +42,8 @@ public class Logic : MonoBehaviour
         Vector3 stageDimensions = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
         //Debug.Log(stageDimensions);
         Probabilities.verifyGeometric();
+
+        Probabilities.TestLoiNormale();
     }
 
     // Update is called once per frame

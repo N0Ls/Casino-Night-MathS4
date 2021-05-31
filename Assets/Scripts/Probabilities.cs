@@ -207,5 +207,13 @@ public class Probabilities
         return wins;
     }
 
+    public static float LoiNormale(float x, float sigma, float epsilon)
+    {
+        return (1/(sigma * Mathf.Sqrt(2 * Mathf.PI))) * Mathf.Exp((-1/2) * Mathf.Pow(((x-epsilon)/sigma),2));
+    }
 
+    public static void TestLoiNormale()
+    {
+        Debug.Log(LoiNormale(0, 3, 0));
+    }
 }
