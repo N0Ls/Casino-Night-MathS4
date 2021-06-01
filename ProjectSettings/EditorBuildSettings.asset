@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Stats.unity
     guid: 4dee42054aaeaed499d168d7e1387a03
+  - enabled: 1
+    path: Assets/Scenes/Roulette.unity
+    guid: bf63581a82869e74186920f296fc69bc
   m_configObjects: {}

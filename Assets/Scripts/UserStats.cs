@@ -5,7 +5,7 @@ using UnityEngine;
 public static class UserStats
 {
 
-    private static int money=120, rounds=0, slotsWinDuo=0, slotsWinTrio=0, bonusCount=0;
+    private static int money=200, rounds=0, slotsWinDuo=0, slotsWinTrio=0, bonusCount=0;
 
     private static int rouletteRounds, rouletteSpins, rouletteWins;
 

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -33,19 +34,24 @@ public class Logic : MonoBehaviour
 
     public float geoParam = 0.7f;
 
-    
+    [SerializeField]
+    private TMP_Text prizeText;
+
+    [SerializeField]
+    private TMP_Text userMoneyText;
+
+    public int prizeValue;
+    public float prizeBonus = 1.0f;
+
+    private bool textUpdated = false;
 
     // Start is called before the first frame update
     void Start()
     {
         GenerateSquares();
         Vector3 stageDimensions = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
-        //Debug.Log(stageDimensions);
-        Probabilities.verifyGeometric();
-        Debug.Log(Probabilities.verifyBernoulli(0.5f));
-        Debug.Log(Probabilities.verifyBinomialFixedParameters());
-        Probabilities.TestLoiUniformDiscrete();
 
+        userMoneyText.text = UserStats.Money.ToString();
     }
 
     // Update is called once per frame
@@ -54,12 +60,29 @@ public class Logic : MonoBehaviour
         if (!stopped)
         {
             resultsChecked = false;
+            prizeValue = 0;
+            prizeBonus = 1.0f;
+            prizeText.enabled = false;
 
+        }
+        if (textUpdated)
+        {
+            textUpdated = false;
+
+            userMoneyText.text = UserStats.Money.ToString();
         }
         if (stopped && !resultsChecked)
         {
             //Checking results
             CheckResults();
+
+            //Update prize text
+            prizeText.enabled = true;
+            prizeText.text = "Prize : " + Mathf.RoundToInt(prizeValue * prizeBonus);
+
+            //Add money to user
+            UserStats.Money += Mathf.RoundToInt(prizeValue * prizeBonus);
+            userMoneyText.text = UserStats.Money.ToString();
         }
     }
 
@@ -165,6 +188,8 @@ public class Logic : MonoBehaviour
     public void move(int bet)
     {
         betColor = colors[bet];
+        UserStats.Money -= 10;
+        UserStats.RouletteRounds += 1;
 
         StartCoroutine("Rotate");
 
@@ -175,6 +200,18 @@ public class Logic : MonoBehaviour
 
         if(betColor == resultColor)
         {
+            if(betColor == Color.green)
+            {
+                prizeValue = 75;
+                prizeBonus = Probabilities.LoiUniforme(2, 3);
+            }
+            else
+            {
+                prizeValue = 15;
+                prizeBonus = Probabilities.LoiUniforme(1, 2);
+            }
+
+            
             Debug.Log("Win");
             UserStats.RouletteWins++;
         }

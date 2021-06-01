@@ -17,9 +17,6 @@ public class GameControl : MonoBehaviour
     private TMP_Text userMoneyText;
 
     [SerializeField]
-    private TMP_Text userRoundText;
-
-    [SerializeField]
     private Row[] rows;
 
     [SerializeField]
@@ -49,9 +46,6 @@ public class GameControl : MonoBehaviour
         {
             textUpdated = false;
 
-            //Increments rounds number
-            userRoundText.text = UserStats.slotResults[2].ToString();
-
             userMoneyText.text = UserStats.Money.ToString();
         }
         if (rows[0].rowStopped && rows[1].rowStopped && rows[2].rowStopped && !resultsChecked)
@@ -69,9 +63,6 @@ public class GameControl : MonoBehaviour
             //Add money to user
             UserStats.Money += Mathf.RoundToInt(prizeValue * prizeBonus);
             userMoneyText.text = UserStats.Money.ToString();
-
-
-
         }
     }
 
@@ -202,6 +193,8 @@ public class GameControl : MonoBehaviour
         if(randomValue < sliderUI.value)
         {
             UserStats.BonusCount++;
+
+            //Structure de corrélation
             float bonusValue = Probabilities.Poisson(0, sliderUI.value);
             prizeBonus = 1+bonusValue;
         }

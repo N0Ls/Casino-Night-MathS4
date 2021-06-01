@@ -296,17 +296,16 @@ public class Probabilities
         Debug.Log(LoiNormale(0, 3, 0));
     }
 
-    public static float LoiUniformDiscrete(int a, int b)
+    public static float LoiUniforme(int a, int b)
     {
-        return a + Random.Range(0f, 1f) * b;
+        return a + Random.Range(0f, 1f) / (1/(b-a));
     }
 
     public static void TestLoiUniformDiscrete()
     {
-        for (int i = 0; i < 100; i++)
+        for (int i = 0; i < 1000; i++)
         {
-            Debug.Log(LoiUniformDiscrete(1, 2));
+            Debug.Log(LoiUniforme(2, 3));
         }
-  
     }
 }
