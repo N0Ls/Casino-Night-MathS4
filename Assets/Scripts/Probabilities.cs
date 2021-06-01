@@ -165,20 +165,19 @@ public class Probabilities
 
     public static List<float> verifyGeometric()
     {
-        int iter = 10000;
+        int iter = 100000;
 
         List<float> arrayCompteur = new List<float> { 0f, 0f, 0f };
 
         for (int i = 0; i < iter; i++)
         {
-            int index = GeometricPick(0.55f);
-            if (index > 3) index = 3;
-            arrayCompteur[index-1] = arrayCompteur[index-1] += 1;
+            int index = GeometricPick(0.7f);
+            if (index <= 3) arrayCompteur[index - 1] = arrayCompteur[index - 1] += 1;
         }
 
         for (int i = 0; i < arrayCompteur.Count; i++)
         {
-            //Debug.Log(i + " " + arrayCompteur[i]/10000);
+            Debug.Log(i + " " + arrayCompteur[i]/100000);
         }
 
         return arrayCompteur;
@@ -223,7 +222,6 @@ public class Probabilities
             sum += pickFromBernoulli(p);
         }
 
-        Debug.Log((sum / iter));
         if (Mathf.Abs((sum / iter) - p) > 0.01) result = false;
 
         return result;

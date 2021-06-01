@@ -29,7 +29,6 @@ public class StatsDisplay : MonoBehaviour
         rouletteSpins.text = "Spins : " + UserStats.RouletteSpins;
         rouletteWins.text = "Wins : " + UserStats.RouletteWins;
 
-
     }
 
 

@@ -299,7 +299,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 5f4cf4526a5b04c4c813917586ae4812, type: 3}
   - {fileID: 21300000, guid: 948e5cfce7dee0a41badbb9f163535d4, type: 3}
   - {fileID: 21300000, guid: 94300d28c8b54fb4ca2c8f223919a5b5, type: 3}
-  spritePerFrame: 14
+  spritePerFrame: 25
   loop: 1
   destroyOnEnd: 0
 --- !u!114 &7932415
